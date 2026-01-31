@@ -6,4 +6,22 @@ export type JobType = {
   location: string;
   desc: string;
   categories: string[];
+  needs: number;
+  applicants: number;
+};
+
+export type OptionType = { id: string; label: string };
+
+export type filterFormType = {
+  label: string;
+  name: string;
+  items: OptionType[];
+};
+
+export type CompanyType = {
+  image: string;
+  totalJob: number;
+  name: string;
+  categories: string;
+  description: string;
 };

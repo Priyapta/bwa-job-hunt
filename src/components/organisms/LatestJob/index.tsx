@@ -17,6 +17,8 @@ function LatestJob() {
             jobType="Full Time"
             categories={["Marketing", "Design"]}
             desc="description"
+            applicants={1}
+            needs={1}
           />
         ))}
       </div>
