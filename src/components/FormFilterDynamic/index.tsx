@@ -25,6 +25,7 @@ function FormFilterDynamic({
       >
         {filterForms.map((item: filterFormType, i: number) => (
           <CheckboxGroup
+            key={item.name}
             formFilter={formFilter}
             items={item.items}
             label={item.label}

@@ -16,4 +16,8 @@ export const formApplySchema = z.object({
     .min(5, { message: "Full name minimal 5 character" }),
   email: z.email({ message: "Email is required" }),
   phone: z.string().min(6, { message: "Phone have min 6 characters" }),
+  previousJobTitle: z.string(),
+  linkedIn: z.string(),
+  portofolio: z.string(),
+  coverLetter: z.string(),
 });
