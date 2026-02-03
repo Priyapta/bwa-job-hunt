@@ -1,9 +1,12 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { Button } from "../../ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function Navbar() {
+  const router = useRouter();
   return (
     <header className="px-32 py-5 flex flex-row items-start justify-between">
       <div className="inline-flex items-center gap-12">
@@ -32,7 +35,9 @@ function Navbar() {
         </div>
       </div>
       <div className="inlin-flex items-center gap-4 h-8">
-        <Button variant="link">Login</Button>
+        <Button onClick={() => router.push("/signin")} variant="link">
+          Login
+        </Button>
         <Button>Sign Up</Button>
       </div>
     </header>

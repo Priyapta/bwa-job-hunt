@@ -1,10 +1,16 @@
 import { Badge } from "@/components/ui/badge";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineFire } from "react-icons/ai";
 import { IoPeopleOutline } from "react-icons/io5";
 import { MdOutlineFactory } from "react-icons/md";
+import { FaXTwitter, FaFacebook } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa";
+import { Separator } from "@/components/ui/separator";
+import { InstagramIcon } from "lucide-react";
+import LatestJob from "@/components/organisms/LatestJob";
 function DetailCompantPage() {
   return (
     <div className="">
@@ -44,7 +50,7 @@ function DetailCompantPage() {
               </div>
               <div className="mt-2">
                 <Link href="/" className="font-semibold text-primary">
-                  https://twitter.com
+                  https://rizzle.vercel.app/
                 </Link>
               </div>
               <div className="inline-flex items-center gap-10 mt-6">
@@ -99,10 +105,64 @@ function DetailCompantPage() {
       </div>
       <div className="px-32 py-16 flex flex-row items-start gap-10">
         <div className="w-3/4">
-          <div className="text-3xl font-semibold mb-3">Company Profile</div>
-          <div className="text-muted-foreground">LoremIpsum</div>
+          <div className="mb-16">
+            <div className="text-3xl font-semibold mb-3">Company Profile</div>
+            <div className="text-muted-foreground">LoremIpsum</div>
+          </div>
+          <div className="text-3xl font-semibold mb-4">Contact</div>
+          <div className="flex items-center gap-5 w-[400px] flex-wrap">
+            <div className="p-2 border border-primary text-primary w-max inline-flex items-center gap-3 font-semibold">
+              <FaLinkedinIn />
+              <span className="text-sm">https://linkedIn.com/twitter</span>
+            </div>
+            <div className="p-2 border border-primary text-primary w-max inline-flex items-center gap-3 font-semibold">
+              <FaFacebook />
+
+              <span className="text-sm">https://facebook.com/twitter</span>
+            </div>
+            <div className="p-2 border border-primary text-primary w-max inline-flex items-center gap-3 font-semibold">
+              <FaXTwitter />
+              <span className="text-sm">https://facebook.com/twitter</span>
+            </div>
+          </div>
         </div>
-        <div className="w-1/4"></div>
+        <div className="w-1/4">
+          <div className="text-3xl font-semibold mb-4">Tech Stack</div>
+          <div className="text-gray-500 text-sm">
+            Learn about the technology and tools that Pattern uses.
+          </div>
+          <div className="mt-5 inline-flex gap-4">
+            <Badge>HTML</Badge>
+            <Badge>TypeScript</Badge>
+          </div>
+        </div>
+      </div>
+      <div>
+        <Separator />
+        <div className="my-16">
+          <div className="text-3xl font-semibold">Teams</div>
+          <div className="grid grid-cols-5 gap-5 mt-5">
+            {[0, 1, 2, 3, 4].map((i: number) => (
+              <div key={i} className="border border-border px-3 py-5">
+                <div className="w-16 h-16 rounded-full mx-auto" />
+                <div className="text-center my-4">
+                  <div className="font-semibold text-sm">Hariyanto</div>
+                  <div className="text-gray-500 text-xs">CEO & CO-founder</div>
+                </div>
+                <div className="mx-auto w-max">
+                  <div className="inline-flex gap-2">
+                    <InstagramIcon className="w-5 h-5 text-gray-500" />
+                    <FaLinkedinIn className="w-5 h-5 text-gray-500" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <Separator />
+      </div>
+      <div className="px-32 ">
+        <LatestJob />
       </div>
     </div>
   );
