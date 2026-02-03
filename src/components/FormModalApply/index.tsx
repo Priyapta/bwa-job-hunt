@@ -10,15 +10,33 @@ import {
 import { Button } from "../ui/button";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { useForm } from "react-hook-form";
 import { formApplySchema } from "@/lib/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
+import UploadField from "../UploadField";
 function FormModalApply() {
   const form = useForm<z.infer<typeof formApplySchema>>({
     resolver: zodResolver(formApplySchema),
+    defaultValues: {
+      resume: "",
+      fullname: "",
+      email: "",
+      phone: "",
+      previousJobTitle: "",
+      linkedIn: "",
+      portofolio: "",
+      coverLetter: "",
+    },
   });
   const onSubmit = (val: z.infer<typeof formApplySchema>) => {
     console.log(val);
@@ -72,6 +90,7 @@ function FormModalApply() {
                       <FormControl>
                         <Input placeholder="Enter Your Name" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -84,6 +103,7 @@ function FormModalApply() {
                       <FormControl>
                         <Input placeholder="Enter Your Number" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -96,6 +116,7 @@ function FormModalApply() {
                       <FormControl>
                         <Input placeholder="Enter Your Email" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -111,6 +132,7 @@ function FormModalApply() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -130,6 +152,7 @@ function FormModalApply() {
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -142,10 +165,29 @@ function FormModalApply() {
                       <FormControl>
                         <Input placeholder="Enter Your Name" {...field} />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
+              <FormField
+                control={form.control}
+                name="coverLetter"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Additional Information</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Add a cover letter else you want to share"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <UploadField form={form} />
+              <Button className="w-full">Apply</Button>
             </form>
           </Form>
 

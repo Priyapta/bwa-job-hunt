@@ -1,6 +1,8 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { CompanyType } from "@/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 interface CompanyCard extends CompanyType {}
 function CompanyCard({
@@ -10,8 +12,12 @@ function CompanyCard({
   image,
   totalJob,
 }: CompanyCard) {
+  const router = useRouter();
   return (
-    <div className="border broder-border p-6">
+    <div
+      className="border broder-border p-6"
+      onClick={() => router.push("/detail/company/1")}
+    >
       <div className="flex flex-row justify-between items-start">
         <Image src={image} alt={image} width={66} height={66} />
         <Badge>{totalJob} Jobs</Badge>
