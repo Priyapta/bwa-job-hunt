@@ -10,29 +10,42 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { formSignInScema } from "@/lib/form-schema";
+import { formSignInScema, formSignUpSchema } from "@/lib/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-
-function SignInPage() {
-  const form = useForm<z.infer<typeof formSignInScema>>({
-    resolver: zodResolver(formSignInScema),
-    defaultValues: { email: "", password: "" },
+function SignUpPage() {
+  const form = useForm<z.infer<typeof formSignUpSchema>>({
+    resolver: zodResolver(formSignUpSchema),
+    defaultValues: { email: "", password: "", name: "" },
   });
-  const onSubmit = (val: z.infer<typeof formSignInScema>) => {
+  const onSubmit = (val: z.infer<typeof formSignUpSchema>) => {
     console.log(val);
   };
   return (
     <div>
       <div className=" text-3xl text-center font-semibold mb-7">
-        Welcome Back,
+        Get more opportunities
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your full name" {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -62,12 +75,12 @@ function SignInPage() {
             )}
           />
           <Button type="submit" className="w-full">
-            Sign In
+            Sign Up
           </Button>
           <div className="text-gray-500 text-sm">
-            Don't have account?{" "}
+            Already have account?{" "}
             <Link href="/signup" className="text-primary font-medium">
-              Sign Up
+              Sign In
             </Link>
           </div>
         </form>
@@ -76,4 +89,4 @@ function SignInPage() {
   );
 }
 
-export default SignInPage;
+export default SignUpPage;
