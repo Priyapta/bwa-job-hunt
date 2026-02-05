@@ -102,7 +102,7 @@ model Job {
 }
 
 model User {
-  id        String      @id
+  id        String      @id @default(uuid())
   name      String
   password  String
   email     String      @unique

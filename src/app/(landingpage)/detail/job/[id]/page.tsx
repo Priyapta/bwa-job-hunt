@@ -1,11 +1,9 @@
 import FormModalApply from "@/components/FormModalApply";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { BiCategory } from "react-icons/bi";
 
 function DetailJobPage() {

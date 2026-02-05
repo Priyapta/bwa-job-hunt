@@ -13,16 +13,34 @@ import { Input } from "@/components/ui/input";
 import { formSignInScema, formSignUpSchema } from "@/lib/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 import z from "zod";
 function SignUpPage() {
   const form = useForm<z.infer<typeof formSignUpSchema>>({
     resolver: zodResolver(formSignUpSchema),
     defaultValues: { email: "", password: "", name: "" },
   });
-  const onSubmit = (val: z.infer<typeof formSignUpSchema>) => {
-    console.log(val);
+  const router = useRouter();
+  const onSubmit = async (val: z.infer<typeof formSignUpSchema>) => {
+    try {
+      await fetch("/api/user/", {
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+        body: JSON.stringify(val),
+      });
+      toast.success("Success", {
+        description: "Create account success",
+      });
+
+      router.push("/signin");
+    } catch (error) {
+      toast.error("Failed", {
+        description: "Create account failed",
+      });
+    }
   };
   return (
     <div>
