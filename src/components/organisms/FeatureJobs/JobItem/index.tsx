@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { JobType } from "@/types";
+import { categoryJobType, JobType } from "@/types";
 import React from "react";
 interface JobItemProps extends JobType {}
 function JobItem({
@@ -29,9 +29,7 @@ function JobItem({
         <div className="text-muted-foreground h-12 line-clamp-2 text-ellipsis"></div>
       </div>
       <div className="space-x-2">
-        {categories.map((item: string, i: number) => (
-          <Badge key={item}>{item}</Badge>
-        ))}
+        <Badge key={categories.id}>{categories.name}</Badge>
       </div>
     </div>
   );

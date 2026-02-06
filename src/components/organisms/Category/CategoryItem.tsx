@@ -1,8 +1,6 @@
-import React from "react";
-import TitleSection from "../../atoms/TitleSection";
+"use client";
 import { BiCategory } from "react-icons/bi";
 import { HiOutlineArrowRight } from "react-icons/hi";
-
 type CategoryItemProps = {
   name: string;
   totalJobs: number;
