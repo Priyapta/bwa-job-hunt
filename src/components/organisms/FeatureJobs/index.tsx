@@ -1,19 +1,12 @@
 "use client";
 import TitleSection from "@/components/atoms/TitleSection";
-import React, { useMemo } from "react";
-import JobItem from "./JobItem";
-import useSWR from "swr";
-import { fetcher, parsingJobs } from "@/lib/utils";
+import useFeaturedJobs from "@/hooks/useFeaturedJobs";
 import { JobType } from "@/types";
+import JobItem from "./JobItem";
 
 type FeaturedJobs = {};
 function FeatureJobs() {
-  const { data, isLoading, error } = useSWR("/api/job/featured", fetcher);
-  console.log(data, isLoading, error);
-  const jobs = useMemo(
-    () => parsingJobs(data, isLoading, error),
-    [data, isLoading, error],
-  );
+  const { jobs, isLoading, error } = useFeaturedJobs();
   console.log(jobs);
   return (
     <div className="mt-32 mb-10">

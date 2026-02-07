@@ -10,7 +10,8 @@ function JobItem({
   type,
   location,
   desc,
-  categories,
+  category,
+  skills,
 }: JobItemProps) {
   return (
     <div className="border border-border p-6 cursor-pointer">
@@ -26,10 +27,17 @@ function JobItem({
         <div className="text-muted-foreground mb-3">
           {type} . {location}
         </div>
-        <div className="text-muted-foreground h-12 line-clamp-2 text-ellipsis"></div>
+        <div
+          className="text-muted-foreground h-12 line-clamp-2 text-ellipsis"
+          dangerouslySetInnerHTML={{ __html: desc }}
+        ></div>
       </div>
       <div className="space-x-2">
-        <Badge key={categories.id}>{categories.name}</Badge>
+        {skills.map((item: string, i: number) => (
+          <Badge key={item + i} variant={"outline"}>
+            {item}
+          </Badge>
+        ))}
       </div>
     </div>
   );
