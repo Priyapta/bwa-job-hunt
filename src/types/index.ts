@@ -12,8 +12,8 @@ export type JobType = {
   location: string;
   desc: string;
   category: categoryJobType;
-  needs: number;
-  applicants: number;
+  need: number;
+  applicantsCount: number;
   skills: string[];
 };
 

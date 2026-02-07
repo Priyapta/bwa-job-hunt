@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { JobType } from "@/types";
+import { categoryJobType, JobType } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -13,10 +13,9 @@ function JobCard({
   name,
   type,
   location,
-  desc,
-  categories,
-  needs,
-  applicants,
+  skills,
+  need,
+  applicantsCount,
 }: JobCard) {
   const router = useRouter();
 
@@ -37,7 +36,7 @@ function JobCard({
           <div className="h-5 inline-flex gap-2 items-center">
             <Badge variant="secondary">{jobType}</Badge>
             <Separator orientation="vertical" />
-            {categories.map((item: string, i: number) => (
+            {skills.map((item: string, i: number) => (
               <Badge key={i}>{item}</Badge>
             ))}
           </div>
@@ -48,11 +47,13 @@ function JobCard({
           Apply
         </Button>
         <div className="w-full h-2 mt-2 relative bg-gray-300">
-          <Progress className="mt-2 " value={(applicants / needs) * 100} />
+          <Progress className="mt-2 " value={(applicantsCount / need) * 100} />
         </div>
         <div className="text-gray-500 text-sm text-center mt-2">
-          <span className="text-black font-semibold">{applicants} applied</span>
-          of {needs} capacity
+          <span className="text-black font-semibold">
+            {applicantsCount} applied{" "}
+          </span>
+          of {need} capacity
         </div>
       </div>
     </div>
