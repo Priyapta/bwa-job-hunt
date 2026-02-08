@@ -33,4 +33,5 @@ const useJobs = (filter?: string[]) => {
     isLoading,
   };
 };
+
 export default useJobs;
