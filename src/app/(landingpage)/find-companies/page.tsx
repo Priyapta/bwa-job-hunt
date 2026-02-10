@@ -1,10 +1,12 @@
 "use client";
 import { CATEGORIES_OPTIONS } from "@/constants";
 import ExploreDataContainers from "@/containers/ExploreDataContainer";
+import UseCompanies from "@/hooks/useCompanies";
+import useCategoryCompanyFilter from "@/hooks/useCompanyFilter";
 import { formFilterCompanySchema } from "@/lib/form-schema";
-import { CompanyType, filterFormType } from "@/types";
+import { filterFormType } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 const FILTER_FORMS: filterFormType[] = [
@@ -15,15 +17,6 @@ const FILTER_FORMS: filterFormType[] = [
   },
 ];
 
-const dataDummy: CompanyType[] = [
-  {
-    image: "/images/company2.png",
-    categories: "Marketing",
-    description: "Lorem",
-    name: "Twitter",
-    totalJob: 10,
-  },
-];
 function FindCompanyPage() {
   const formFilter = useForm<z.infer<typeof formFilterCompanySchema>>({
     resolver: zodResolver(formFilterCompanySchema),
@@ -31,21 +24,31 @@ function FindCompanyPage() {
       industry: [],
     },
   });
+  const [categories, setCategories] = useState<string[]>([]);
+
+  const { companies, isLoading, mutate } = UseCompanies(categories);
+
+  const { filters } = useCategoryCompanyFilter();
+
   const onSubmitFormFilter = async (
     val: z.infer<typeof formFilterCompanySchema>,
   ) => {
-    console.log(val);
+    setCategories(val.industry);
   };
+  console.log(companies);
+  useEffect(() => {
+    mutate();
+  }, [categories]);
 
   return (
     <ExploreDataContainers
       formFilter={formFilter}
       onSubmitFilter={onSubmitFormFilter}
-      filterForms={FILTER_FORMS}
+      filterForms={filters}
       title="dream companies"
       subtitle="Find the dream companies you dream work for "
-      loading={false}
-      data={dataDummy}
+      loading={isLoading}
+      data={companies}
       type="company"
     />
   );

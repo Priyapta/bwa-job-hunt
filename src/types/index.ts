@@ -25,10 +25,34 @@ export type filterFormType = {
   items: OptionType[];
 };
 
+export type CompanyTeamType = {
+  id: string;
+  name: string;
+  position: string;
+  instagram: string;
+  linkedin: string;
+};
+
+export type CompanySocmedType = {
+  id: string;
+  instagram: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  youtube: string;
+};
 export type CompanyType = {
+  id: string;
+  website: string;
+  location: string;
+  industry: string;
+  dateFounded: Date;
+  techStack: string[];
   image: string;
+  employee: string;
   totalJob: number;
   name: string;
-  categories: string;
   description: string;
+  sosmed: CompanySocmedType;
+  teams: CompanyTeamType[];
 };
