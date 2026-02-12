@@ -5,8 +5,46 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
 import { BiCategory } from "react-icons/bi";
+import prisma from "../../../../../../lib/prisma";
+import { supabasePublicUrl } from "@/lib/supabase";
+import { dateFormat } from "@/lib/utils";
 
-function DetailJobPage() {
+interface DetailJobPage {}
+async function getDetailJob(id: string) {
+  const data = await prisma.job.findFirst({
+    where: {
+      id,
+    },
+    include: {
+      Company: {
+        include: {
+          Companyoverview: true,
+        },
+      },
+      CategoryJob: true,
+    },
+  });
+
+  let imageUrl;
+  if (data?.Company?.Companyoverview[0].image) {
+    imageUrl = await supabasePublicUrl(
+      data.Company.Companyoverview[0].image,
+      "company",
+    );
+  } else {
+    imageUrl = "/images/company2.png";
+  }
+  return { ...data, imageL: imageUrl };
+}
+async function DetailJobPage({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
+  console.log(id);
+
+  const data = await getDetailJob(id);
+  console.log(data);
+  const applicants = data.applicantsCount || 0;
+  const needs = data.need || 0;
   return (
     <>
       <div className="bg-slate-100 px-32 pt-10 pb-14">
@@ -23,33 +61,26 @@ function DetailJobPage() {
           </Link>{" "}
           /
           <Link
-            href="/detail/company/1"
+            href={`/detail/company/${data?.Company?.Companyoverview[0].id}`}
             className="hover:underline hover:text-black"
           >
-            Twitter{" "}
+            {data?.Company?.Companyoverview[0].name}
           </Link>{" "}
           /
           <Link
             href="/detail/job/1"
             className="hover:underline hover:text-black"
           >
-            Social Media Assistant {"  "}
+            {data?.roles}
           </Link>
         </div>
         <div className="bg-white shadow mt-10 p-5 w-11/12 mx-auto flex flex-row justify-between items-center">
           <div className="inline-flex items-center gap-5">
-            <Image
-              src="/images/company2.png"
-              alt="/images/company2.png"
-              width={88}
-              height={88}
-            />
+            <Image src={data.imageL} alt={data.imageL} width={88} height={88} />
             <div className="flex flex-col p-5">
-              <div className="text-2xl font-semibold">
-                Social media Assistant
-              </div>
+              <div className="text-2xl font-semibold">{data?.roles}</div>
               <div className="text-muted-foreground">
-                Agency . Paris, France . Full-Time
+                {data?.Company?.Companyoverview[0].location} . {data?.jobType}
               </div>
             </div>
           </div>
@@ -60,51 +91,31 @@ function DetailJobPage() {
         <div className="w-3/4">
           <div className="mb-4">
             <div className="text-3xl font-semibold mb-3">Description</div>
-            <div className="text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
+            <div
+              className="text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: data?.description!! }}
+            ></div>
           </div>
           <div className="mb-4">
             <div className="text-3xl font-semibold mb-3">Responsibilites</div>
-            <div className="text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
+            <div
+              className="text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: data?.responsibility!! }}
+            ></div>
           </div>
           <div className="mb-4">
             <div className="text-3xl font-semibold mb-3">Who You Are</div>
-            <div className="text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
+            <div
+              className="text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: data?.whoYouAre!! }}
+            ></div>
           </div>
           <div className="mb-4">
             <div className="text-3xl font-semibold mb-3">Nice-To-Haves</div>
-            <div className="text-muted-foreground">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </div>
+            <div
+              className="text-muted-foreground"
+              dangerouslySetInnerHTML={{ __html: data?.niceToHaves!! }}
+            ></div>
           </div>
         </div>
         <div className="w-1/4">
@@ -113,28 +124,36 @@ function DetailJobPage() {
             <div className="text-3xl font-semibold">About this role</div>
             <div className="mt-6 p-6 bg-slate-50">
               <div className="mb-2">
-                <span className="font-semibold">5 Applied</span>
-                <span className="text-gray-600">of 10 capacity</span>
-                <Progress value={33} />
+                <span className="font-semibold">
+                  {data?.applicantsCount} Applied
+                </span>
+                <span className="text-gray-600">of {data?.need} capacity</span>
+                <Progress value={applicants / needs} />
               </div>
             </div>
             <div className="mt-6 space-y-4">
               <div className="flex flex-row justify-between">
                 <div className="text-gray-500">Apply Before</div>
-                <div className="font-semibold">January 1, 2026</div>
+                <div className="font-semibold">
+                  {dateFormat(data.dueDate!!)}
+                </div>
               </div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-gray-500">Job Posted On</div>
-              <div className="font-semibold">January 1 , 2026</div>
+              <div className="font-semibold">
+                {dateFormat(data.datePosted!!)}
+              </div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-gray-500">Job Type</div>
-              <div className="font-semibold">Full-Time</div>
+              <div className="font-semibold">{data?.jobType}</div>
             </div>
             <div className="flex flex-row justify-between">
               <div className="text-gray-500">Salary</div>
-              <div className="font-semibold">$75 - $85</div>
+              <div className="font-semibold">
+                ${data?.salaryFrom} - ${data?.salaryTo}
+              </div>
             </div>
           </div>
           <Separator className="my-10" />
@@ -150,9 +169,9 @@ function DetailJobPage() {
           <div>
             <div className="text-3xl font-semibold">Required Skills</div>
             <div className="my-10 inline-flex gap-4">
-              {[0, 1, 2].map((item: number) => (
-                <Badge variant="outline" key={item}>
-                  Marketing
+              {data?.requiredSkills?.map((item: string, i: number) => (
+                <Badge variant="outline" key={item + i}>
+                  {item}
                 </Badge>
               ))}
             </div>
@@ -167,15 +186,12 @@ function DetailJobPage() {
             This job comes with several perks and benefits
           </div>
           <div className="grid grid-cols-3 gap-5">
-            {[0, 1, 2].map((item: number) => (
+            {data?.benefits?.map((item: any, i: number) => (
               <div key={item}>
                 <BiCategory className="w-12 h-12 text-primary" />
-                <div className="font-semibold text-xl mt-6">
-                  Full Healthcare
-                </div>
+                <div className="font-semibold text-xl mt-6">{item.benefit}</div>
                 <div className="mt-3 text-sm text-gray-500">
-                  We believe in thriving communities and that start with our
-                  team being happy and healthy.
+                  {item.description}
                 </div>
               </div>
             ))}

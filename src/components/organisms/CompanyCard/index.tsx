@@ -11,18 +11,19 @@ function CompanyCard({
   description,
   image,
   totalJob,
+  id,
 }: CompanyCard) {
   const router = useRouter();
   return (
     <div
-      className="border broder-border p-6"
-      onClick={() => router.push("/detail/company/1")}
+      onClick={() => router.push("/detail/company/" + id)}
+      className="border border-border p-6 cursor-pointer"
     >
       <div className="flex flex-row justify-between items-start">
         <Image src={image} alt={image} width={66} height={66} />
         <Badge>{totalJob} Jobs</Badge>
       </div>
-      <div className="mt-4">
+      <div className="my-4">
         <div className="text-lg font-semibold mb-2">{name}</div>
         <div
           className="line-clamp-3 text-sm text-muted-foreground"
@@ -30,7 +31,7 @@ function CompanyCard({
         ></div>
       </div>
       <div className="space-x-2">
-        <Badge>{industry}</Badge>
+        <Badge variant="outline">{industry}</Badge>
       </div>
     </div>
   );

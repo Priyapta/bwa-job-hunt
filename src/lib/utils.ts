@@ -1,10 +1,9 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
-import bcrypt from "bcryptjs";
-import { boolean } from "zod";
 import { categoryJobType, CompanyType, JobType, OptionType } from "@/types";
+import bcrypt from "bcryptjs";
+import { clsx, type ClassValue } from "clsx";
+import dayjs from "dayjs";
+import { twMerge } from "tailwind-merge";
 import { supabasePublicUrl } from "./supabase";
-import { Company } from "@prisma/client";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -124,7 +123,7 @@ export const parsingCompanies = async (
           dateFounded: overview?.dateFounded ?? null,
           description: overview?.description ?? "",
           employee: overview?.employee ?? "",
-          industry: overview?.industry.name ?? "",
+          industry: overview?.industry ?? "",
           location: overview?.location ?? "",
           techStack: overview?.techStack ?? [],
           website: overview?.website ?? "",
@@ -138,4 +137,11 @@ export const parsingCompanies = async (
     );
   }
   return [];
+};
+
+export const dateFormat = (
+  date: Date | string,
+  format: string = "DD MMM YYYY",
+) => {
+  return dayjs(date).format(format);
 };

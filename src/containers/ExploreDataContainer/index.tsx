@@ -47,6 +47,8 @@ function ExploreDataContainers({
             </div>
           </div>
           <div className="text-center text-gray-500">{subtitle}</div>
+        </div>
+        <div>
           <FormSearchDynamic />
         </div>
       </div>
@@ -60,27 +62,32 @@ function ExploreDataContainers({
         </div>
         <div className="w-4/5">
           <div className="mb-8">
-            <div className="text-xl font-semibold">
+            <div className="text-3xl font-semibold">
               All {type === "job" ? "Jobs" : "Companies"}
             </div>
             <div className="text-muted-foreground">
-              Showing {data.length} result
+              Showing {data.length} Result
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-7">
+
+          <div className="">
             {loading ? (
-              <div>Loading ....</div>
+              <div>Loading...</div>
             ) : (
               <>
-                {type === "job"
-                  ? data?.map((item: any, i: number) => (
+                {type === "job" ? (
+                  <div className="grid grid-cols-1 gap-7">
+                    {data?.map((item: any, i: number) => (
                       <JobCard key={i} {...item} />
-                    ))
-                  : data?.map((item: any, i: number) => (
-                      <div key={i}>
-                        <CompanyCard key={i} {...item} />
-                      </div>
                     ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-5">
+                    {data?.map((item: any, i: number) => (
+                      <CompanyCard key={i} {...item} />
+                    ))}
+                  </div>
+                )}
               </>
             )}
           </div>
