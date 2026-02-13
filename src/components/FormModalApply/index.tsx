@@ -24,7 +24,22 @@ import { formApplySchema } from "@/lib/form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import UploadField from "../UploadField";
-function FormModalApply() {
+import { useSession } from "next-auth/react";
+import { supabaseUploadFile } from "@/lib/supabase";
+import { resume } from "react-dom/server";
+import { fetcher } from "@/lib/utils";
+import { toast } from "sonner";
+import { title } from "process";
+import { useRouter } from "next/navigation";
+
+interface modalApply {
+  image: string | undefined;
+  roles: string | undefined;
+  location: string | undefined;
+  jobType: string | undefined;
+  id: string | undefined;
+}
+function FormModalApply({ image, roles, location, jobType, id }: modalApply) {
   const form = useForm<z.infer<typeof formApplySchema>>({
     resolver: zodResolver(formApplySchema),
     defaultValues: {
@@ -38,35 +53,68 @@ function FormModalApply() {
       coverLetter: "",
     },
   });
-  const onSubmit = (val: z.infer<typeof formApplySchema>) => {
-    console.log(val);
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  const onSubmit = async (val: z.infer<typeof formApplySchema>) => {
+    console.log(session?.user, id);
+    try {
+      const { filename, error } = await supabaseUploadFile(
+        val.resume,
+        "applicant",
+      );
+      const reqData = {
+        userId: session?.user.id,
+        jobId: id,
+        resume: filename,
+        coverLetter: val.coverLetter,
+        linkedIn: val.linkedIn,
+        phone: val.phone,
+        portofolio: val.portofolio,
+        previousJobTitle: val.previousJobTitle,
+      };
+      if (error) {
+        throw "error";
+      }
+      await fetch("/api/job/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reqData),
+      });
+      toast.success("Apply Job Success");
+
+      router.replace("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Please try again");
+    }
   };
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button size="lg" className="text-lg px-12 py-6">
-            Apply
-          </Button>
+          {session ? (
+            <Button size="lg" className="text-lg px-12 py-6">
+              Apply
+            </Button>
+          ) : (
+            <Button variant="outline" disabled>
+              Sign In First
+            </Button>
+          )}
         </DialogTrigger>
 
         <DialogContent className="sm:max-w-[600px]:">
           <div className="inline-flex items-center gap-4">
             <div>
               {" "}
-              <Image
-                src="/images/company2.png"
-                alt="/images/company2.png"
-                width={60}
-                height={60}
-              />
+              <Image src={image!!} alt={image!!} width={60} height={60} />
             </div>
             <div>
               <div className="text-lg font-semibold">
                 Social Media Assistant
               </div>
               <div className="text-gray-500">
-                Agency . Paris , France . Full-Time
+                {location} . {jobType}
               </div>
             </div>
           </div>

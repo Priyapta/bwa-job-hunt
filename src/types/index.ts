@@ -55,4 +55,5 @@ export type CompanyType = {
   description: string;
   sosmed: CompanySocmedType;
   teams: CompanyTeamType[];
+  
 };
