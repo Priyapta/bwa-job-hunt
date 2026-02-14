@@ -38,8 +38,16 @@ interface modalApply {
   location: string | undefined;
   jobType: string | undefined;
   id: string | undefined;
+  isApply: number | undefined;
 }
-function FormModalApply({ image, roles, location, jobType, id }: modalApply) {
+function FormModalApply({
+  image,
+  roles,
+  location,
+  jobType,
+  id,
+  isApply,
+}: modalApply) {
   const form = useForm<z.infer<typeof formApplySchema>>({
     resolver: zodResolver(formApplySchema),
     defaultValues: {
@@ -92,10 +100,24 @@ function FormModalApply({ image, roles, location, jobType, id }: modalApply) {
     <div>
       <Dialog>
         <DialogTrigger asChild>
-          {session ? (
-            <Button size="lg" className="text-lg px-12 py-6">
-              Apply
+          {status === "loading" ? (
+            <Button variant="outline" disabled>
+              Checking session...
             </Button>
+          ) : session ? (
+            isApply === 1 ? (
+              <Button
+                size="lg"
+                disabled
+                className="text-lg px-12 py-6 bg-green-500"
+              >
+                Applied
+              </Button>
+            ) : (
+              <Button size="lg" className="text-lg px-12 py-6">
+                Apply
+              </Button>
+            )
           ) : (
             <Button variant="outline" disabled>
               Sign In First

@@ -113,6 +113,7 @@ export default async function DetailJobPage({
             jobType={data.jobType}
             location={data?.Company?.Companyoverview?.[0]?.location ?? ""}
             id={data.id}
+            isApply={data.isApply}
           />
         </div>
       </div>
